@@ -49,6 +49,9 @@ public:
 
 		_stack.push(make_pair(0, 0));
 		_maze[0] = CELL_VISITED;
+		int y = rand() % _mazeHeight;
+		_stack.push(make_pair(x, y));
+		_maze[y * _mazeWidth + x] = CELL_VISITED;
 		_visitedCells = 1;
 
 		_pathWidth = 3;
@@ -67,7 +70,7 @@ public:
 		};
 
 		//Maze Algorithm
-		if (_visitedCells < _mazeHeight * _mazeWidth)
+		if (_visitedCells < _mazeWidth * _mazeHeight)
 		{
 
 			//create a set of unvisited neighbours
@@ -79,11 +82,11 @@ public:
 				neighbours.push_back(0);
 
 			//east neighbour
-			if (_stack.top().first < _mazeWidth && (_maze[offset(1, 0)] & CELL_VISITED) == 0)
+			if (_stack.top().first < _mazeWidth - 1 && (_maze[offset(1, 0)] & CELL_VISITED) == 0)
 				neighbours.push_back(1);
 
 			//south neighbour
-			if (_stack.top().second < _mazeHeight && (_maze[offset(0, 1)] & CELL_VISITED) == 0)
+			if (_stack.top().second < _mazeHeight - 1 && (_maze[offset(0, 1)] & CELL_VISITED) == 0)
 				neighbours.push_back(2);
 
 			//west neighbour
@@ -124,7 +127,7 @@ public:
 				}
 
 				//new cell
-				_maze[offset(0, 0)] |= CELL_VISITED;
+					_maze[offset(0, 0)] |= CELL_VISITED;
 				_visitedCells++;
 			}
 			else
@@ -151,7 +154,7 @@ public:
 						if (_maze[y * _mazeWidth + x] & CELL_VISITED)
 							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::WHITE)); // Draw Cell
 						else
-							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::GREEN)); // Draw Cell
+							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::DARK_YELLOW)); // Draw Cell
 					}
 				}
 
@@ -177,7 +180,7 @@ public:
 
 int main()
 {
-	//srand(clock());
+	srand(clock());
 
 	Maze maze;
 
