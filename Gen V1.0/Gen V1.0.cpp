@@ -21,7 +21,7 @@ private:
 	int _mazeHeight;
 	int* _maze;
 
-	enum 
+	enum
 	{
 		CELL_N = 0x01,
 		CELL_E = 0x02,
@@ -59,6 +59,8 @@ public:
 	// called once per frame
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		this_thread::sleep_for(20ms);
+
 		auto offset = [&](int x, int y)
 		{
 			return (_stack.top().second + y) * _mazeWidth + (_stack.top().first + x);
@@ -67,8 +69,6 @@ public:
 		//Maze Algorithm
 		if (_visitedCells < _mazeHeight * _mazeWidth)
 		{
-
-			this_thread::sleep_for(10ms);
 
 			//create a set of unvisited neighbours
 
@@ -89,7 +89,6 @@ public:
 			//west neighbour
 			if (_stack.top().first > 0 && (_maze[offset(-1, 0)] & CELL_VISITED) == 0)
 				neighbours.push_back(3);
-
 
 			//we check if there are any neighbours available
 			if (!neighbours.empty())
@@ -134,7 +133,6 @@ public:
 			}
 		}
 
-
 		// Rendering Maze =>
 
 		//Clear screen
@@ -150,22 +148,21 @@ public:
 				{
 					for (int py = 0; py < _pathWidth; py++)
 					{
-						if (_maze[y * _mazeWidth + x] & CELL_VISITED) 
+						if (_maze[y * _mazeWidth + x] & CELL_VISITED)
 							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::WHITE)); // Draw Cell
-						else						  
-							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::BLUE)); // Draw Cell
-
+						else
+							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::GREEN)); // Draw Cell
 					}
 				}
 
 				// Draw passageways between cells
-				for (int p = 0; p < _pathWidth; p++) 
+				for (int p = 0; p < _pathWidth; p++)
 				{
 					if (_maze[y * _mazeWidth + x] & CELL_S)
 						Draw(x * (_pathWidth + 1) + p, y * (_pathWidth + 1) + _pathWidth);
 
 					if (_maze[y * _mazeWidth + x] & CELL_E)
-						Draw(x * (_mazeWidth + 1) + _mazeWidth, y * (_mazeWidth + 1) + p);
+						Draw(x * (_pathWidth + 1) + _pathWidth, y * (_pathWidth + 1) + p);
 				}
 			}
 		}
@@ -174,14 +171,13 @@ public:
 			for (int px = 0; px < _pathWidth; px++)
 				Draw(_stack.top().first * (_pathWidth + 1) + px, _stack.top().second * (_pathWidth + 1) + py, olc::Pixel(olc::GREEN)); // Draw Cell
 
-
 		return true;
 	}
 };
 
 int main()
 {
-	srand(clock());
+	//srand(clock());
 
 	Maze maze;
 
