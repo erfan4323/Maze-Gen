@@ -68,7 +68,7 @@ public:
 	// called once per frame
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		//this_thread::sleep_for(10ms);
+		this_thread::sleep_for(10ms);
 
 		auto offset = [&](int x, int y)
 		{
