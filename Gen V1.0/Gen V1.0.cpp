@@ -16,6 +16,10 @@ public:
 	{
 		sAppName = "Maze V1.0";
 	}
+	~Maze() 
+	{
+		delete[] _maze;
+	}
 
 private:
 	int _mazeWidth;
