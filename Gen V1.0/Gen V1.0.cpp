@@ -15,7 +15,6 @@ public:
 	Maze()
 	{
 		sAppName = "Maze V1.0";
-		srand(time(0));
 	}
 
 private:
@@ -38,6 +37,10 @@ private:
 
 	int _pathWidth;
 
+	//random set
+	std::random_device rd;
+	std::mt19937 rng;
+
 public:
 	// Called once at the start, so create things here
 	bool OnUserCreate() override
@@ -49,8 +52,10 @@ public:
 		_maze = new int[_mazeHeight * _mazeWidth];
 		memset(_maze, 0x00, _mazeWidth * _mazeHeight * sizeof(int));
 
-		int x = rand() % _mazeWidth;
-		int y = rand() % _mazeHeight;
+		rng = std::mt19937(rd()); // Seed the random number generator
+
+		int x = rng() % _mazeWidth;
+		int y = rng() % _mazeHeight;
 		_stack.push(make_pair(x, y));
 		_maze[y * _mazeWidth + x] = CELL_VISITED;
 		_visitedCells = 1;
@@ -63,7 +68,7 @@ public:
 	// called once per frame
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		this_thread::sleep_for(10ms);
+		//this_thread::sleep_for(10ms);
 
 		auto offset = [&](int x, int y)
 		{
@@ -97,7 +102,7 @@ public:
 			if (!neighbours.empty())
 			{
 				//choose a random neighbour
-				int nextCellDir = neighbours[rand() % neighbours.size()];
+				int nextCellDir = neighbours[rng() % neighbours.size()];
 
 				//create path from current cell to the neighbour cell
 				switch (nextCellDir)
@@ -180,7 +185,6 @@ public:
 
 int main()
 {
-	srand(time(0));
 
 	Maze maze;
 
