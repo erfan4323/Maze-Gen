@@ -144,7 +144,7 @@ public:
 		// Rendering Maze =>
 
 		//Clear screen
-		Clear(olc::BLACK);
+		Clear(olc::VERY_DARK_GREY);
 
 		//Draw Maze
 		for (int x = 0; x < _mazeWidth; x++)
@@ -157,9 +157,9 @@ public:
 					for (int py = 0; py < _pathWidth; py++)
 					{
 						if (_maze[y * _mazeWidth + x] & CELL_VISITED)
-							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::WHITE)); // Draw Cell
+							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::DARK_CYAN)); // Draw Cell
 						else
-							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::DARK_YELLOW)); // Draw Cell
+							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::DARK_GREEN)); // Draw Cell
 					}
 				}
 
@@ -167,10 +167,10 @@ public:
 				for (int p = 0; p < _pathWidth; p++)
 				{
 					if (_maze[y * _mazeWidth + x] & CELL_S)
-						Draw(x * (_pathWidth + 1) + p, y * (_pathWidth + 1) + _pathWidth);
+						Draw(x * (_pathWidth + 1) + p, y * (_pathWidth + 1) + _pathWidth, olc::Pixel(olc::DARK_CYAN));
 
 					if (_maze[y * _mazeWidth + x] & CELL_E)
-						Draw(x * (_pathWidth + 1) + _pathWidth, y * (_pathWidth + 1) + p);
+						Draw(x * (_pathWidth + 1) + _pathWidth, y * (_pathWidth + 1) + p, olc::Pixel(olc::DARK_CYAN));
 				}
 			}
 		}
