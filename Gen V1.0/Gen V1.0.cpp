@@ -47,8 +47,7 @@ public:
 		_maze = new int[_mazeHeight * _mazeWidth];
 		memset(_maze, 0x00, _mazeWidth * _mazeHeight * sizeof(int));
 
-		_stack.push(make_pair(0, 0));
-		_maze[0] = CELL_VISITED;
+		int x = rand() % _mazeWidth;
 		int y = rand() % _mazeHeight;
 		_stack.push(make_pair(x, y));
 		_maze[y * _mazeWidth + x] = CELL_VISITED;
