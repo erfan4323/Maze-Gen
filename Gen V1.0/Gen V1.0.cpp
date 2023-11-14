@@ -1,6 +1,7 @@
 //std includes
 #include <iostream>
 #include <stack>
+#include <random>
 
 //renderer
 #define OLC_PGE_APPLICATION
@@ -14,6 +15,7 @@ public:
 	Maze()
 	{
 		sAppName = "Maze V1.0";
+		srand(time(0));
 	}
 
 private:
@@ -61,7 +63,7 @@ public:
 	// called once per frame
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		this_thread::sleep_for(20ms);
+		this_thread::sleep_for(10ms);
 
 		auto offset = [&](int x, int y)
 		{
@@ -71,7 +73,6 @@ public:
 		//Maze Algorithm
 		if (_visitedCells < _mazeWidth * _mazeHeight)
 		{
-
 			//create a set of unvisited neighbours
 
 			vector<int> neighbours;
@@ -126,7 +127,7 @@ public:
 				}
 
 				//new cell
-					_maze[offset(0, 0)] |= CELL_VISITED;
+				_maze[offset(0, 0)] |= CELL_VISITED;
 				_visitedCells++;
 			}
 			else
@@ -179,11 +180,11 @@ public:
 
 int main()
 {
-	srand(clock());
+	srand(time(0));
 
 	Maze maze;
 
-	if (maze.Construct(160, 100, 8, 8))
+	if (maze.Construct(160, 100, 6, 6))
 		maze.Start();
 
 	return 0;
