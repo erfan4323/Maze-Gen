@@ -48,6 +48,21 @@ public:
 		return _maze;
 	}
 
+	vector<vector<int>> GetMaze2D() const
+	{
+		vector<vector<int>> maze2D(_mazeHeight, vector<int>(_mazeWidth, 0));
+
+		for (int y = 0; y < _mazeHeight; y++)
+		{
+			for (int x = 0; x < _mazeWidth; x++)
+			{
+				maze2D[y][x] = _maze[y * _mazeWidth + x];
+			}
+		}
+
+		return maze2D;
+	}
+
 	// Called once at the start, so create we things here
 	bool OnUserCreate() override
 	{
