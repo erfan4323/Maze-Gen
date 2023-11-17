@@ -15,15 +15,12 @@ public:
 	{
 		sAppName = "Maze V1.0";
 	}
-	~Maze() 
-	{
-		delete[] _maze;
-	}
 
 private:
-	int _mazeWidth;
-	int _mazeHeight;
-	int* _maze;
+	static const int _mazeWidth = 40;
+	static const int _mazeHeight = 25;
+
+	std::vector<int> _maze;
 
 	enum
 	{
@@ -48,19 +45,17 @@ public:
 	// Called once at the start, so create things here
 	bool OnUserCreate() override
 	{
-		//Maze Parameters
-		_mazeHeight = 25;
-		_mazeWidth = 40;
-
-		_maze = new int[_mazeHeight * _mazeWidth];
-		memset(_maze, 0x00, _mazeWidth * _mazeHeight * sizeof(int));
+		_maze = std::vector<int>(_mazeWidth * _mazeHeight, 0);
 
 		rng = std::mt19937(rd()); // Seed the random number generator
 
 		int x = rng() % _mazeWidth;
 		int y = rng() % _mazeHeight;
+
 		_stack.push(make_pair(x, y));
+
 		_maze[y * _mazeWidth + x] = CELL_VISITED;
+
 		_visitedCells = 1;
 
 		_pathWidth = 3;
@@ -154,17 +149,12 @@ public:
 		{
 			for (int y = 0; y < _mazeHeight; y++)
 			{
+				olc::Pixel cellColor = (_maze[y * _mazeWidth + x] & CELL_VISITED) ? olc::DARK_CYAN : olc::DARK_GREEN;
+
 				// Each cell is inflated by _pathWidth, so fill it in
 				for (int px = 0; px < _pathWidth; px++)
-				{
 					for (int py = 0; py < _pathWidth; py++)
-					{
-						if (_maze[y * _mazeWidth + x] & CELL_VISITED)
-							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::DARK_CYAN)); // Draw Cell
-						else
-							Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, olc::Pixel(olc::DARK_GREEN)); // Draw Cell
-					}
-				}
+						Draw(x * (_pathWidth + 1) + px, y * (_pathWidth + 1) + py, cellColor); // Draw Cell
 
 				// Draw passageways between cells
 				for (int p = 0; p < _pathWidth; p++)
