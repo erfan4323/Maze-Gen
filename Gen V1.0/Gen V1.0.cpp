@@ -1,6 +1,7 @@
 //std includes
 #include <stack>
 #include <random>
+#include <vector>
 
 //renderer
 #define OLC_PGE_APPLICATION
@@ -20,7 +21,7 @@ private:
 	static const int _mazeWidth = 40;
 	static const int _mazeHeight = 25;
 
-	std::vector<int> _maze;
+	vector<int> _maze;
 
 	enum
 	{
@@ -42,7 +43,12 @@ private:
 	std::mt19937 rng;
 
 public:
-	// Called once at the start, so create things here
+	vector<int> GetMaze() 
+	{
+		return _maze;
+	}
+
+	// Called once at the start, so create we things here
 	bool OnUserCreate() override
 	{
 		_maze = std::vector<int>(_mazeWidth * _mazeHeight, 0);
@@ -73,6 +79,23 @@ public:
 			return (_stack.top().second + y) * _mazeWidth + (_stack.top().first + x);
 		};
 
+		//--------------------------------|Updating Maze|--------------------------------//
+
+		Generate(offset);
+
+		//--------------------------------|Rendering Maze|--------------------------------//
+
+		//Clear screen
+		Clear(olc::VERY_DARK_GREY);
+
+		Render();
+
+		return true;
+	}
+
+private:
+	void Generate(std::function<int(int, int)> offset)
+	{
 		//Maze Algorithm
 		if (_visitedCells < _mazeWidth * _mazeHeight)
 		{
@@ -138,12 +161,10 @@ public:
 				_stack.pop(); //Backtrack
 			}
 		}
-
-		// Rendering Maze =>
-
-		//Clear screen
-		Clear(olc::VERY_DARK_GREY);
-
+	}
+	
+	void Render()
+	{
 		//Draw Maze
 		for (int x = 0; x < _mazeWidth; x++)
 		{
@@ -171,8 +192,6 @@ public:
 		for (int py = 0; py < _pathWidth; py++)
 			for (int px = 0; px < _pathWidth; px++)
 				Draw(_stack.top().first * (_pathWidth + 1) + px, _stack.top().second * (_pathWidth + 1) + py, olc::Pixel(olc::GREEN)); // Draw Cell
-
-		return true;
 	}
 };
 
